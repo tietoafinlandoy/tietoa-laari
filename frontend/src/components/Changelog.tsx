@@ -3,10 +3,18 @@ import { Timeline, Text } from "@mantine/core";
 export default function Changelog() {
   return (
     <Timeline title="Muutosloki">
+      <Timeline.Item title="v1.0.6 Statusten suodatus">
+        <Text c="dimmed">
+          Lisätty suodatusmahdollisuuksin suodatus statusten mukaan.
+        </Text>
+        <Text size="xs" mt={4}>
+          26.11.2024
+        </Text>
+      </Timeline.Item>
       <Timeline.Item title="v1.0.5 Ehdotusten suodatus">
         <Text c="dimmed">
           Lisätty suodatustyökalut, luonti- ja muokkauspäivän mukaan sekä
-          tiimeittäin. Lisäksi yö- ja päiväteemat.
+          tiimeittäin. Lisäksi vähemmän kirkas iltateema vaihtoehdoksi.
         </Text>
         <Text size="xs" mt={4}>
           15.11.2024

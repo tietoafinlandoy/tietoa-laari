@@ -1,9 +1,19 @@
-import { ActionIcon, Button, Group, rem, UnstyledButton } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  rem,
+  UnstyledButton,
+  Text,
+  Center,
+} from "@mantine/core";
 import { DateFieldInput } from "./DateFieldInput";
 import { Filter } from "./Filter";
 import classes from "../../styles/FieldFilterInput.module.css";
 import { IconX } from "@tabler/icons-react";
 import { ArrayFieldInput } from "./ArrayFieldInput";
+import { StatusFieldInput } from "./StatusFieldInput";
+import { apply_filter } from "../../api/apply_filter";
 
 interface FieldInputProps<D> {
   collection: D[];
@@ -24,6 +34,18 @@ function Close<D>({ onDelete }: { onDelete: FieldInputProps<D>["onDelete"] }) {
   );
 }
 
+function NumberOfFilteredItems<D>({
+  collection,
+  filter,
+}: Pick<FieldInputProps<D>, "collection" | "filter">) {
+  const x = apply_filter(filter, collection);
+  return (
+    <Center pt={rem(7)} className={`${classes.mid}`}>
+      {x.length} / {collection.length}
+    </Center>
+  );
+}
+
 export function FieldInput<D>({
   collection,
   filter,
@@ -35,6 +57,7 @@ export function FieldInput<D>({
       return (
         <Group gap="xs" className={classes.field}>
           <DateFieldInput filter={filter} onChange={(f) => onChange(f)} />
+          <NumberOfFilteredItems collection={collection} filter={filter} />
           <Close onDelete={onDelete} />
         </Group>
       );
@@ -46,6 +69,19 @@ export function FieldInput<D>({
             filter={filter}
             onChange={(f) => onChange(f)}
           />
+          <NumberOfFilteredItems collection={collection} filter={filter} />
+          <Close onDelete={onDelete} />
+        </Group>
+      );
+    else if (filter.field_type === "status")
+      return (
+        <Group gap="xs" className={classes.field}>
+          <StatusFieldInput
+            collection={collection}
+            filter={filter}
+            onChange={(f) => onChange(f)}
+          />
+          <NumberOfFilteredItems collection={collection} filter={filter} />
           <Close onDelete={onDelete} />
         </Group>
       );

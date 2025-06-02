@@ -5,8 +5,6 @@ import config from "../config";
 export default async function getTasks({ queryKey }: any) {
   const [_key, auth] = queryKey;
 
-  console.log("FETCH:", { headers: { Authorization: `Bearer: ${auth}` } });
-
   const response = await axios.get(
     `https://${config.API_URL}/tasks?include_archived=true`,
     { headers: { Authorization: `Bearer ${auth}` } }

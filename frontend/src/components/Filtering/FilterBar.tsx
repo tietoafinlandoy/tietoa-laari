@@ -75,35 +75,36 @@ export function FilterBar({
         ))}
       </Group>
       <Group>
-        <Text size="xs">
-          {filtered_tasks.length} / {all_tasks.length}
-        </Text>
-        <Chip
-          variant="light"
-          checked={true}
-          onChange={(value) =>
-            onQuantifierChange(quantifier === "or" ? "and" : "or")
-          }
-          icon={
-            quantifier === "or" ? (
-              <IconLetterE
-                style={{
-                  transform: "rotate(180deg)",
-                  width: rem(16),
-                }}
-              />
-            ) : (
-              <IconLetterA
-                style={{
-                  transform: "rotate(180deg)",
-                  width: rem(16),
-                }}
-              />
-            )
-          }
-        >
-          {quantifier === "and" ? "Kaikki" : "Joku"}
-        </Chip>
+        {filters.length > 1 ? (
+          <Chip
+            variant="light"
+            checked={true}
+            onChange={(value) =>
+              onQuantifierChange(quantifier === "or" ? "and" : "or")
+            }
+            icon={
+              quantifier === "or" ? (
+                <IconLetterE
+                  style={{
+                    transform: "rotate(180deg)",
+                    width: rem(16),
+                  }}
+                />
+              ) : (
+                <IconLetterA
+                  style={{
+                    transform: "rotate(180deg)",
+                    width: rem(16),
+                  }}
+                />
+              )
+            }
+          >
+            {quantifier === "and" ? "Kaikki" : "Joku"}
+          </Chip>
+        ) : (
+          <></>
+        )}
       </Group>
     </Group>
   ) : (

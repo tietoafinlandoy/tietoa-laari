@@ -3,7 +3,6 @@ import { ArrayFilter } from "./Filter";
 import { IconTags } from "@tabler/icons-react";
 import { ExtendedTask } from "../../types/Task";
 import classes from "../../styles/FieldFilterInput.module.css";
-import { useState } from "react";
 
 interface ArrayPickerMenuProps<D> {
   collection: D[];
@@ -43,8 +42,6 @@ export function ArrayValue<D>({
   collection,
   onChange,
 }: ArrayValueProps<D>) {
-  const [opened, setOpened] = useState(false);
-
   const array_values = collection.map((item) => item[field]);
   const unique_values = Array.from(new Set(array_values.flat()));
 
@@ -62,26 +59,6 @@ export function ArrayValue<D>({
       searchable
       comboboxProps={{ width: 200 }}
     />
-  );
-
-  return (
-    <Menu withinPortal={false} closeOnItemClick={false}>
-      <Menu.Target>
-        <UnstyledButton
-          onClick={() => setOpened((o) => !o)}
-          className={`${classes.hover} ${classes.mid}`}
-        >
-          {values.join(", ")}
-        </UnstyledButton>
-      </Menu.Target>
-      <Menu.Dropdown>
-        <ArrayPickerMenu
-          onChange={onChange}
-          field={field}
-          collection={collection}
-        />
-      </Menu.Dropdown>
-    </Menu>
   );
 }
 
@@ -111,9 +88,6 @@ export function ArrayFieldInput<D>({
   filter,
   onChange,
 }: ArrayFieldInputProps<D>) {
-  const array_values = collection.map((item) => item[filter.field as keyof D]);
-  const unique_values = Array.from(new Set(array_values.flat()));
-
   return (
     <>
       <ArrayFieldName field={filter.field} />

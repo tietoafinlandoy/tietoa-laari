@@ -7,6 +7,7 @@ import {
   useCombobox,
 } from "@mantine/core";
 import {
+  IconArrowBigRightLinesFilled,
   IconCalendarPlus,
   IconCalendarRepeat,
   IconFilterPlus,
@@ -19,6 +20,7 @@ import { DatePickerMenu, DateValue } from "./DateFieldInput";
 import { DateTime } from "ts-luxon";
 import { DateInput, DatePicker } from "@mantine/dates";
 import { ArrayPickerMenu } from "./ArrayFieldInput";
+import { StatusPickerMenu } from "./StatusFieldInput";
 
 interface AddNewFilterProps {
   //   onChange: () => void;
@@ -27,8 +29,6 @@ interface AddNewFilterProps {
 }
 
 export function AddNewFilter({ tasks, handlers }: AddNewFilterProps) {
-  const combobox = useCombobox();
-
   return (
     <Menu withinPortal={false} closeOnItemClick={false} shadow="lg">
       <Menu.Target>
@@ -111,6 +111,33 @@ export function AddNewFilter({ tasks, handlers }: AddNewFilterProps) {
                     type: "field",
                     field: "teams",
                     field_type: "array",
+                    op: "all",
+                    value: value,
+                  })
+                }
+              />
+            </Menu.Dropdown>
+          </Menu>
+        </Menu.Item>
+        <Menu.Item leftSection={<IconArrowBigRightLinesFilled size={20} />}>
+          <Menu
+            position="left-start"
+            offset={55}
+            withinPortal={false}
+            closeOnItemClick={false}
+          >
+            <Menu.Target>
+              <UnstyledButton>Status</UnstyledButton>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <StatusPickerMenu
+                collection={tasks}
+                field="status"
+                onChange={(value) =>
+                  handlers.append({
+                    type: "field",
+                    field: "status",
+                    field_type: "status",
                     op: "all",
                     value: value,
                   })

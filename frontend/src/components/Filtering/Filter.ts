@@ -1,4 +1,5 @@
 import { DateTime } from "ts-luxon";
+import { Status } from "../../types/Status";
 
 // Logic filters
 
@@ -42,7 +43,17 @@ export interface ArrayFilter<D> extends _FieldFilterCommon<D> {
   value: string[];
 }
 
-export type FieldFilter<D> = StringFilter<D> | DateFilter<D> | ArrayFilter<D>;
+export interface StatusFilter<D> extends _FieldFilterCommon<D> {
+  field_type: "status";
+  op: "all";
+  value: Status[];
+}
+
+export type FieldFilter<D> =
+  | StringFilter<D>
+  | DateFilter<D>
+  | ArrayFilter<D>
+  | StatusFilter<D>;
 
 export type Filter<D> =
   | AndFilter<D>

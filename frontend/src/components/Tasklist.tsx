@@ -165,43 +165,13 @@ export default function Tasklist() {
         <Stack>
           <Text>
             Laari on Tietoan kehitysideoiden ja -ajatusten talletuspaikka.
-            Työympäristössä jotain kehitettävää? Laita ajatus joihinkin
-            seuraavista kanavista:
+            Työympäristössä jotain kehitettävää? Laita Slackkiin, kanavalle{" "}
+            <Anchor href="slack://channel?team=T1FB2571R&id=C07RSEW76D9">
+              #c-laari
+            </Anchor>
+            .
           </Text>
-          <List ml="1rem">
-            <ListItem>
-              <Group>
-                <Anchor href="slack://channel?team=T1FB2571R&id=C07RJR1R2PQ">
-                  #team-laari-tie
-                </Anchor>
-                Tietomallinnus-tiimit kehitysideat
-              </Group>
-            </ListItem>
-            <ListItem>
-              <Group>
-                <Anchor href="slack://channel?team=T1FB2571R&id=C07RC1CA99V">
-                  #team-laari-lah
-                </Anchor>
-                Lähtötiedot-tiimit kehitysideat
-              </Group>
-            </ListItem>
-            <ListItem>
-              <Group>
-                <Anchor href="slack://channel?team=T1FB2571R&id=C07S57XKTR7">
-                  #team-laari-vis
-                </Anchor>
-                Visualisointi-tiimit kehitysideat
-              </Group>
-            </ListItem>
-            <ListItem>
-              <Group>
-                <Anchor href="slack://channel?team=T1FB2571R&id=C07RSEW76D9">
-                  #c-laari
-                </Anchor>
-                Kaikki muut kehitysideat
-              </Group>
-            </ListItem>
-          </List>
+
           <Text>
             Teknisissä asioissa laita idea Laariin tai pistä viesti{" "}
             <Anchor href="slack://user?team=T1FB2571R&id=DCHJRD96D">

@@ -1,5 +1,6 @@
 import { DateTime } from "ts-luxon";
 import { FieldFilter, Filter } from "../components/Filtering/Filter";
+import { ExtendedTask } from "../types/Task";
 
 function is_key<D>(
   field: FieldFilter<D>["field"]
@@ -38,18 +39,28 @@ function apply_filter_to_single_value<T>(filter: Filter<T>, value: T): boolean {
           return false;
         }
       } else if (filter.op === "all") {
-        const arr = value[filter.field];
-        return (
-          !filter.value.length ||
-          (Array.isArray(arr) &&
-            arr.every((item) => filter.value.includes(item)))
-        );
+        if (filter.field_type === "status") {
+          // dirty :/
+          const task = value as ExtendedTask;
+          return (
+            !filter.value.length || filter.value.includes(task.status.status)
+          );
+        } else {
+          const field_value = value[filter.field];
+          const arr = Array.isArray(field_value) ? field_value : [field_value];
+
+          return (
+            !filter.value.length ||
+            arr.every((item) => filter.value.includes(item))
+          );
+        }
       } else if (filter.op === "some") {
-        const arr = value[filter.field];
+        const field_value = value[filter.field];
+        const arr = Array.isArray(field_value) ? field_value : [field_value];
+
         return (
           !filter.value.length ||
-          (Array.isArray(arr) &&
-            arr.some((item) => filter.value.includes(item)))
+          arr.some((item) => filter.value.includes(item))
         );
       }
     } else {

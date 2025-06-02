@@ -13,8 +13,10 @@
   /* font-weight: 800; */
   background-color: var(--mantine-primary-color-light);
   font-size: smaller;
-  padding: 3px 0.5rem;
+  padding: 5px 0.4rem;
   height: 1.9rem;
+  /* line-height: 1.9rem; */
+  /* text-align: center; */
 }
 
 .left {
@@ -25,12 +27,12 @@
 .right {
   border-radius: 0 1rem 1rem 0;
   padding-right: 0.7rem;
-  border-left: 2px solid rgba(0, 0, 0, 0.1);
+  border-left: 2px solid rgba(0, 0, 0, 0.05);
 }
 
 .mid {
   border-radius: 0;
-  border-left: 2px solid rgba(0, 0, 0, 0.1);
+  border-left: 2px solid rgba(0, 0, 0, 0.05);
 }
 
 .select {
