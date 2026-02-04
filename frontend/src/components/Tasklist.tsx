@@ -16,6 +16,7 @@ import {
   Text,
   TextInput,
   UnstyledButton,
+  SegmentedControl,
 } from "@mantine/core";
 import { useFilteredData } from "../hooks/useFilteredData";
 import { useDisclosure, useListState } from "@mantine/hooks";
@@ -41,6 +42,8 @@ import { apply_filter } from "../api/apply_filter";
 import { Filter } from "./Filtering/Filter";
 import { FilterBar } from "./Filtering/FilterBar";
 import { AddNewFilter } from "./Filtering/AddNewFilter";
+import TeamBubbles from "./TeamBubbles";
+
 
 interface ThProps extends TableThProps {
   children: React.ReactNode | string;
@@ -113,7 +116,7 @@ export default function Tasklist() {
   const { tasks } = useFilteredData();
   const [search, setSearch] = useState("");
   const [opened, setOpened] = useState("");
-
+  const [viewMode, setViewMode] = useState<"table" | "bubbles">("table");
   // const selected = useMap<string, boolean>();
 
   const [settingsOpened, { toggle: settingsToggle, close: settingsClose }] =
@@ -211,86 +214,108 @@ export default function Tasklist() {
           onQuantifierChange={setQuantifier}
           // onChange={setCurrentFilters}
         />
-
-        <Table
-          stickyHeader
-          highlightOnHover
-          layout="fixed"
-          verticalSpacing="xs"
-        >
-          <Table.Thead>
-            <Table.Tr style={{ fontWeight: 700 }}>
-              <Th
-                reversed={isReversed("description")}
-                sorted={isSorted("description")}
-                onSort={() => setSorting("description")}
-                miw="68%"
-                // w="68%"
-              >
-                Ajatus
-              </Th>
-              <Th
-                visibleFrom="md"
-                reversed={isReversed("created")}
-                sorted={isSorted("created")}
-                onSort={() => setSorting("created")}
-                w={rem(135)}
-              >
-                Ehdotettu
-              </Th>
-              <Th
-                visibleFrom="md"
-                reversed={isReversed("teams")}
-                sorted={isSorted("teams")}
-                onSort={() => setSorting("teams")}
-                w={rem(170)}
-              >
-                Tiimi
-              </Th>
-
-              <Th
-                reversed={isReversed("status")}
-                sorted={isSorted("status")}
-                onSort={() => setSorting("status")}
-                w="4rem"
-              >
-                <Tooltip tooltip="Status">
-                  <IconArrowBigRightLinesFilled size="1rem" stroke={2} />
-                </Tooltip>
-              </Th>
-              <Th
-                reversed={isReversed("votes")}
-                sorted={isSorted("votes")}
-                onSort={() => setSorting("votes")}
-                w="4rem"
-              >
-                <Tooltip tooltip="Slack-reaktioita">
-                  <IconThumbUpFilled size="1rem" stroke={2} />
-                </Tooltip>
-              </Th>
-            </Table.Tr>
-          </Table.Thead>
-          <TasklistItems
-            tasks={freeFilteredTasks}
-            onOpen={(openedTask) =>
-              setOpened(opened === openedTask._id ? "" : openedTask._id)
-            }
+              <Stack maw={{ base: "100%", md: "80%" }}>
+        <Flex wrap={"nowrap"} justify={"flex-start"} align={"center"}>
+          <Burger opened={settingsOpened} onClick={settingsToggle}></Burger>
+          <TextInput
+            w="100%"
+            value={search}
+            placeholder="Vapaa haku"
+            m="0.3em"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setSearch(event.currentTarget.value);
+            }}
           />
-          {/* <Table.Tbody>
-            {dateFilteredTasks.map((task) => (
-              <TasklistItem
-                key={task._id}
-                task={task}
-                selected={false}
-                opened={opened === task._id}
-                onOpen={(openedTask) =>
-                  setOpened(opened === openedTask._id ? "" : openedTask._id)
-                }
-              />
-            ))}
-          </Table.Tbody> */}
-        </Table>
+          <AddNewFilter tasks={tasks} handlers={setCurrentFilters} />
+          <LightDarkModeButton />
+        </Flex>
+
+        <FilterBar
+          all_tasks={tasks}
+          filtered_tasks={freeFilteredTasks}
+          filters={currentFilters}
+          handlers={setCurrentFilters}
+          quantifier={quantifier}
+          onQuantifierChange={setQuantifier}
+        />
+
+        <Flex justify="flex-end" align="center">
+          <SegmentedControl
+            value={viewMode}
+            onChange={(value) => setViewMode(value as "table" | "bubbles")}
+            data={[
+              { label: "Taulukko", value: "table" },
+              { label: "Tiimikuplat", value: "bubbles" },
+            ]}
+            size="xs"
+          />
+        </Flex>
+
+        {viewMode === "table" ? (
+          <Table
+            stickyHeader
+            highlightOnHover
+            layout="fixed"
+            verticalSpacing="xs"
+          >
+            <Table.Thead>
+              <Table.Tr style={{ fontWeight: 700 }}>
+                <Th
+                  reversed={isReversed("description")}
+                  sorted={isSorted("description")}
+                  onSort={() => setSorting("description")}
+                  miw="68%"
+                >
+                  Ajatus
+                </Th>
+                <Th
+                  visibleFrom="md"
+                  reversed={isReversed("created")}
+                  sorted={isSorted("created")}
+                  onSort={() => setSorting("created")}
+                  w={rem(135)}
+                >
+                  Ehdotettu
+                </Th>
+                <Th
+                  visibleFrom="md"
+                  reversed={isReversed("teams")}
+                  sorted={isSorted("teams")}
+                  onSort={() => setSorting("teams")}
+                  w={rem(170)}
+                >
+                  Tiimi
+                </Th>
+                <Th
+                  reversed={isReversed("status")}
+                  sorted={isSorted("status")}
+                  onSort={() => setSorting("status")}
+                  w="4rem"
+                >
+                  <Tooltip tooltip="Status">
+                    <IconArrowBigRightLinesFilled size="1rem" stroke={2} />
+                  </Tooltip>
+                </Th>
+                <Th
+                  reversed={isReversed("votes")}
+                  sorted={isSorted("votes")}
+                  onSort={() => setSorting("votes")}
+                  w="4rem"
+                >
+                  <Tooltip tooltip="Slack-reaktioita">
+                    <IconThumbUpFilled size="1rem" stroke={2} />
+                  </Tooltip>
+                </Th>
+              </Table.Tr>
+            </Table.Thead>
+            <TasklistItems
+              tasks={freeFilteredTasks}
+              onOpen={(openedTask) =>
+                setOpened(opened === openedTask._id ? "" : openedTask._id)
+              }
+            />
+          </Table>
+        ) : (
+          <TeamBubbles tasks={freeFilteredTasks} />
+        )}
       </Stack>
-    </Center>
-  );
-}
